@@ -42,9 +42,7 @@
                             <p:menuitem value="Cargo"
                                         action="#{controleCargo.listar()}"
                                         ajax="false"/>
-                            <p:menuitem value="Escolaridade"
-                                        action="#{controleEscolaridade.listar()}"
-                                        ajax="false"/>
+                           
                                                      
                         </p:submenu>
                         <p:submenu label="Usuario: #{controleLogin.usuarioLogado.apelido}" rendered="#{controleLogin.usuarioLogado != null}">
