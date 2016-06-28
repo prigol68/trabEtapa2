@@ -13,8 +13,7 @@ import javax.faces.convert.FacesConverter;
 
 /**
  *
- * @author Jorge Luis Boeira Bavaresco
- * @email jorge.bavaresco@passofundo.ifsul.edu.br
+ * @daniel
  */
 @FacesConverter(value = "converterPais")
 public class ConverterPais implements Converter, Serializable {

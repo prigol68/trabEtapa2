@@ -7,7 +7,10 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 
-
+/**
+ *
+ * @daniel
+ */
 public class DAOGenerico<T> implements Serializable {
     private List<T> listaObjetos;
     private List<T> listaTodos;

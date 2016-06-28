@@ -12,8 +12,7 @@ import javax.faces.convert.FacesConverter;
 
 /**
  *
- * @author Jorge Luis Boeira Bavaresco
- * @email jorge.bavaresco@passofundo.ifsul.edu.br
+ * @daniel
  */
 @FacesConverter(value = "converterCidade")
 public class ConverterCidade implements Converter, Serializable {

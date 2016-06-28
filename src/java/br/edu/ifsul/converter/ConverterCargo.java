@@ -2,6 +2,8 @@
 package br.edu.ifsul.converter;
 
 import br.edu.ifsul.jpa.EntityManagerUtil;
+import br.edu.ifsul.modelo.Cargo;
+import br.edu.ifsul.modelo.Cidade;
 import br.edu.ifsul.modelo.Estado;
 import java.io.Serializable;
 import javax.faces.component.UIComponent;
@@ -13,8 +15,8 @@ import javax.faces.convert.FacesConverter;
  *
  * @daniel
  */
-@FacesConverter(value = "converterEstado")
-public class ConverterEstado implements Converter, Serializable {
+@FacesConverter(value = "converterCargo")
+public class ConverterCargo implements Converter, Serializable {
 
     // converte da tela para o objeto
     @Override
@@ -22,7 +24,7 @@ public class ConverterEstado implements Converter, Serializable {
         if (string == null || string.equals("Selecione um registro")){
             return null;
         }
-        return EntityManagerUtil.getEntityManager().find(Estado.class, Integer.parseInt(string));
+        return EntityManagerUtil.getEntityManager().find(Cargo.class, Integer.parseInt(string));
     }
 
     // converte do objeto para a tela
@@ -31,7 +33,7 @@ public class ConverterEstado implements Converter, Serializable {
         if (o == null){
             return null;
         }
-        Estado obj = (Estado) o;
+        Cargo obj = (Cargo) o;
         return obj.getId().toString();
     }
 

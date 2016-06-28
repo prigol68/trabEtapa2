@@ -1,19 +1,19 @@
 
 package br.edu.ifsul.dao;
 
+import br.edu.ifsul.modelo.Cargo;
 import br.edu.ifsul.modelo.Cidade;
-import br.edu.ifsul.modelo.Estado;
 import java.io.Serializable;
 
 /**
  *
  * @daniel
  */
-public class EstadoDAO<T> extends DAOGenerico<Estado>implements Serializable {
+public class CargoDAO<T> extends DAOGenerico<Cargo>implements Serializable {
 
-    public EstadoDAO(){
+    public CargoDAO(){
         super();
-        super.setClassePersistente(Estado.class);
+        super.setClassePersistente(Cargo.class);
         super.setOrdem("nome");// ordem padrão
     }
 

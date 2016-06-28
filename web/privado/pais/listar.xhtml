@@ -6,37 +6,40 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">Manutenção de Estados</ui:define>
+        <ui:define name="titulo">Manutenção de Paises</ui:define>
         <ui:define name="conteudo">
-            <h:form>
+            <h:form id="formListagem">
                 <p:messages/>
                 <p:growl id="growl"/>
-                <p:commandButton value="Novo" action="#{controlePais.novo()}" ajax="false"/>
+                <p:commandButton value="Novo" actionListener="#{controlePais.novo()}" icon="ui-icon-document"
+                                 oncomplete="PF('dlg').show();" update=":formEdicao"/>
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem:"/>
                         <p:selectOneMenu value="#{controlePais.dao.ordem}">
                             <f:selectItem itemLabel="ID" itemValue="id"/>
                             <f:selectItem itemLabel="Nome" itemValue="nome"/>
+                            
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Filtro:"/>
                         <p:inputText value="#{controlePais.dao.filtro}">
                             <p:ajax event="blur" update="listagem growl"/>
                         </p:inputText>
-                        <p:commandButton value="Filtrar" update="listagem growl"/>
+                        <p:commandButton value="Filtrar" update="listagem growl"
+                                         icon="ui-icon-search"/>
                         <p:outputLabel value="Máximo de objetos:"/>
                         <p:inputText value="#{controlePais.dao.maximoObjetos}" size="3">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
                         <p:commandButton value="Primeiro" actionListener="#{controlePais.dao.primeiro()}"
-                                         update="listagem"/>
+                                         update="listagem" icon="ui-icon-seek-first"/>
                         <p:commandButton value="Anterior" actionListener="#{controlePais.dao.anterior()}"
-                                         update="listagem"/>                        
+                                         update="listagem" icon="ui-icon-seek-prev"/>                        
                         <p:commandButton value="Proximo" actionListener="#{controlePais.dao.proximo()}"
-                                         update="listagem"/>                        
+                                         update="listagem" icon="ui-icon-seek-next"/>                        
                         <p:commandButton value="Ultimo" actionListener="#{controlePais.dao.ultimo()}"
-                                         update="listagem"/>                        
+                                         update="listagem" icon="ui-icon-seek-end"/>                        
                     </p:panelGrid>
                 </div>
                 <p:dataTable value="#{controlePais.dao.listaObjetos}" var="obj"
@@ -53,18 +56,50 @@
                         <p:outputLabel value="#{obj.nome}"/>
                     </p:column>                
                     
-                    <p:column headerText="Alterar">
-                        <p:commandLink value="Alterar" 
-                                       action="#{controlePais.editar(obj.id)}" ajax="false"/>
-                    </p:column>    
-                    <p:column headerText="Remover">
-                        <p:commandLink value="Remover" 
-                                       action="#{controlePais.remover(obj.id)}"
-                                       onclick="if (!confirm('Confirma a exclusão'))
-                                           return false" ajax="false"/>
-                    </p:column>                    
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton  icon="ui-icon-pencil" id="btnEditar"
+                                              actionListener="#{controlePais.editar(obj.id)}" 
+                                              oncomplete="PF('dlg').show();" update=":formEdicao"/>
+                            <p:commandButton   icon="ui-icon-trash" id="btnExcluir"
+                                               actionListener="#{controlePais.remover(obj.id)}"
+                                               onclick="if (!confirm('Confirma a exclusão'))
+                                                           return false" update="@form"
+                                               process="@form"/>       
+                            <p:tooltip for="btnEditar" value="Editar"/>
+                            <p:tooltip for="btnExcluir" value="Excluir"/>
+                        </div>
+                    </p:column>                   
                 </p:dataTable>
             </h:form>            
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog widgetVar="dlg" header="Edição" modal="true" resizable="false">
+                <h:form id="formEdicao">
+                    <p:growl/>
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <f:facet name="footer">
+                                <div align="center">
+                                    <p:commandButton value="Salvar" icon="ui-icon-disk"
+                                                     actionListener="#{controlePais.salvar()}"
+                                                     oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                                                     update=":formEdicao :formListagem"/>
+                                </div>
+                            </f:facet>
+                            <p:outputLabel value="ID"/>
+                            <p:inputText readonly="true" value="#{controlePais.objeto.id}"/>
+                            <p:outputLabel value="Nome" for="txtNome"/>
+                            <p:inputText id="txtNome"
+                                         value="#{controlePais.objeto.nome}"
+                                         size="40" maxlength="40"
+                                         placeholder="Obrigatório"/>
+                            
+                        </p:panelGrid>
+                    </div>
+                </h:form>
+                <ui:include src="/templates/ajaxstatus.xhtml"/>
+            </p:dialog>
         </ui:define>
     </ui:composition>    
 

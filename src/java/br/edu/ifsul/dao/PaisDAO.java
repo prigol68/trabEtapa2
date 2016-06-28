@@ -6,8 +6,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Jorge Luis Boeira Bavaresco
- * @email jorge.bavaresco@passofundo.ifsul.edu.br
+ * @daniel
  */
 public class PaisDAO<T> extends DAOGenerico<Pais>implements Serializable {
 

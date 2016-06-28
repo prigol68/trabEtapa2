@@ -6,47 +6,47 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">Manutenção de Estados</ui:define>
+        <ui:define name="titulo">Manutenção de Filiais</ui:define>
         <ui:define name="conteudo">
             <h:form id="formListagem">
                 <p:messages/>
                 <p:growl id="growl"/>
-                <p:commandButton value="Novo" actionListener="#{controleEstado.novo()}" icon="ui-icon-document"
+                <p:commandButton value="Novo" actionListener="#{controleFilial.novo()}" icon="ui-icon-document"
                                  oncomplete="PF('dlg').show();" update=":formEdicao"/>
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem:"/>
-                        <p:selectOneMenu value="#{controleEstado.dao.ordem}">
+                        <p:selectOneMenu value="#{controleFilial.dao.ordem}">
                             <f:selectItem itemLabel="ID" itemValue="id"/>
                             <f:selectItem itemLabel="Nome" itemValue="nome"/>
-                            <f:selectItem itemLabel="Pais" itemValue="pais.nome"/>
+                            <f:selectItem itemLabel="Cidade" itemValue="cidade.nome"/>
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Filtro:"/>
-                        <p:inputText value="#{controleEstado.dao.filtro}">
+                        <p:inputText value="#{controleFilial.dao.filtro}">
                             <p:ajax event="blur" update="listagem growl"/>
                         </p:inputText>
                         <p:commandButton value="Filtrar" update="listagem growl"
                                          icon="ui-icon-search"/>
                         <p:outputLabel value="Máximo de objetos:"/>
-                        <p:inputText value="#{controleEstado.dao.maximoObjetos}" size="3">
+                        <p:inputText value="#{controleFilial.dao.maximoObjetos}" size="3">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
-                        <p:commandButton value="Primeiro" actionListener="#{controleEstado.dao.primeiro()}"
+                        <p:commandButton value="Primeiro" actionListener="#{controleFilial.dao.primeiro()}"
                                          update="listagem" icon="ui-icon-seek-first"/>
-                        <p:commandButton value="Anterior" actionListener="#{controleEstado.dao.anterior()}"
+                        <p:commandButton value="Anterior" actionListener="#{controleFilial.dao.anterior()}"
                                          update="listagem" icon="ui-icon-seek-prev"/>                        
-                        <p:commandButton value="Proximo" actionListener="#{controleEstado.dao.proximo()}"
+                        <p:commandButton value="Proximo" actionListener="#{controleFilial.dao.proximo()}"
                                          update="listagem" icon="ui-icon-seek-next"/>                        
-                        <p:commandButton value="Ultimo" actionListener="#{controleEstado.dao.ultimo()}"
+                        <p:commandButton value="Ultimo" actionListener="#{controleFilial.dao.ultimo()}"
                                          update="listagem" icon="ui-icon-seek-end"/>                        
                     </p:panelGrid>
                 </div>
-                <p:dataTable value="#{controleEstado.dao.listaObjetos}" var="obj"
+                <p:dataTable value="#{controleFilial.dao.listaObjetos}" var="obj"
                              id="listagem">
                     <f:facet name="footer">
                         <div align="center">
-                            <p:outputLabel value="#{controleEstado.dao.mensagemNavegacao}"/>
+                            <p:outputLabel value="#{controleFilial.dao.mensagemNavegacao}"/>
                         </div>
                     </f:facet>
                     <p:column headerText="ID">
@@ -55,16 +55,16 @@
                     <p:column headerText="Nome">                        
                         <p:outputLabel value="#{obj.nome}"/>
                     </p:column>                
-                    <p:column headerText="Pais">              
-                        <p:outputLabel value="#{obj.pais.nome}"/>
+                    <p:column headerText="Cidade">              
+                        <p:outputLabel value="#{obj.cidade.nome}"/>
                     </p:column>
                     <p:column headerText="Ações">
                         <div align="center">
                             <p:commandButton  icon="ui-icon-pencil" id="btnEditar"
-                                              actionListener="#{controleEstado.editar(obj.id)}" 
+                                              actionListener="#{controleFilial.editar(obj.id)}" 
                                               oncomplete="PF('dlg').show();" update=":formEdicao"/>
                             <p:commandButton   icon="ui-icon-trash" id="btnExcluir"
-                                               actionListener="#{controleEstado.remover(obj.id)}"
+                                               actionListener="#{controleFilial.remover(obj.id)}"
                                                onclick="if (!confirm('Confirma a exclusão'))
                                                            return false" update="@form"
                                                process="@form"/>       
@@ -84,25 +84,25 @@
                             <f:facet name="footer">
                                 <div align="center">
                                     <p:commandButton value="Salvar" icon="ui-icon-disk"
-                                                     actionListener="#{controleEstado.salvar()}"
+                                                     actionListener="#{controleFilial.salvar()}"
                                                      oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
                                                      update=":formEdicao :formListagem"/>
                                 </div>
                             </f:facet>
                             <p:outputLabel value="ID"/>
-                            <p:inputText readonly="true" value="#{controleEstado.objeto.id}"/>
+                            <p:inputText readonly="true" value="#{controleFilial.objeto.id}"/>
                             <p:outputLabel value="Nome" for="txtNome"/>
                             <p:inputText id="txtNome"
-                                         value="#{controleEstado.objeto.nome}"
+                                         value="#{controleFilial.objeto.nome}"
                                          size="40" maxlength="40"
                                          placeholder="Obrigatório"/>
-                            <p:outputLabel value="Pais" for="selectPais"/>
-                            <p:selectOneMenu id="selectPais"
-                                             value="#{controleEstado.objeto.pais}">
-                                <f:converter converterId="converterPais"/>
+                            <p:outputLabel value="Cidade" for="selectCidade"/>
+                            <p:selectOneMenu id="selectCidade"
+                                             value="#{controleFilial.objeto.cidade}">
+                                <f:converter converterId="converterCidade"/>
                                 <f:selectItem itemLabel="Selecione um registro"
                                               noSelectionOption="true"/>
-                                <f:selectItems value="#{controleEstado.daoPais.listaTodos}"
+                                <f:selectItems value="#{controleFilial.daoCidade.listaTodos}"
                                                var="e" itemLabel="#{e.nome}"/>
                             </p:selectOneMenu>
                         </p:panelGrid>

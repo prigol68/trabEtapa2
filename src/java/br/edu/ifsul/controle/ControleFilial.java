@@ -1,36 +1,40 @@
 package br.edu.ifsul.controle;
 
-import br.edu.ifsul.dao.EstadoDAO;
-import br.edu.ifsul.dao.PaisDAO;
-import br.edu.ifsul.modelo.Estado;
-import br.edu.ifsul.modelo.Pais;
+
+
+
+import br.edu.ifsul.dao.FilialDAO;
+import br.edu.ifsul.dao.CidadeDAO;
+import br.edu.ifsul.modelo.Filial;
+import br.edu.ifsul.modelo.Cidade;
 import br.edu.ifsul.util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @daniel
  */
-@ManagedBean(name = "controleEstado")
+@ManagedBean(name = "controleFilial")
 @ViewScoped
-public class ControleEstado implements Serializable {
-    private EstadoDAO<Estado> dao;
-    private Estado objeto;
-    private PaisDAO<Pais> daoPais;
+public class ControleFilial implements Serializable {
+    private FilialDAO<Filial> dao;
+    private Filial objeto;
+    private CidadeDAO<Cidade> daoCidade;
     
-    public ControleEstado(){
-        dao = new EstadoDAO<>();
-        daoPais = new PaisDAO<>();
+    public ControleFilial(){
+        dao = new FilialDAO<>();
+        daoCidade = new CidadeDAO<>();
     }
     
     public String listar(){
-        return "/privado/estado/listar?faces-redirect=true";
+        return "/privado/filial/listar?faces-redirect=true";
     }
     
     public void novo(){
-        objeto = new Estado();        
+        objeto = new Filial();        
     }
     
     public void salvar(){
@@ -68,27 +72,28 @@ public class ControleEstado implements Serializable {
         }
     }    
         
-    public EstadoDAO getDao() {
+
+    public FilialDAO getDao() {
         return dao;
     }
 
-    public void setDao(EstadoDAO dao) {
+    public void setDao(FilialDAO dao) {
         this.dao = dao;
     }
 
-    public Estado getObjeto() {
+    public Filial getObjeto() {
         return objeto;
     }
 
-    public void setObjeto(Estado objeto) {
+    public void setObjeto(Filial objeto) {
         this.objeto = objeto;
     }
 
-    public PaisDAO<Pais> getDaoPais() {
-        return daoPais;
+    public CidadeDAO<Cidade> getDaoCidade() {
+        return daoCidade;
     }
 
-    public void setDaoPais(PaisDAO<Pais> daoPais) {
-        this.daoPais = daoPais;
+    public void setDaoCidade(CidadeDAO<Cidade> daoCidade) {
+        this.daoCidade = daoCidade;
     }
 }

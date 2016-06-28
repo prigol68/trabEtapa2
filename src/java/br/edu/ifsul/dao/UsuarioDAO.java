@@ -6,8 +6,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Jorge Luis Boeira Bavaresco
- * @email jorge.bavaresco@passofundo.ifsul.edu.br
+ * @daniel
  */
 public class UsuarioDAO<T> extends DAOGenerico<Usuario> implements Serializable {
 

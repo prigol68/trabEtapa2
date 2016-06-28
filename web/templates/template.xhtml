@@ -29,7 +29,22 @@
                                         ajax="false"/>           
                             <p:menuitem value="Cidade"
                                         action="#{controleCidade.listar()}"
-                                        ajax="false"/>  
+                                        ajax="false"/>
+                            <p:menuitem value="Filial"
+                                        action="#{controleFilial.listar()}"
+                                        ajax="false"/>
+                            <p:menuitem value="Funcionario"
+                                        action="#{controleFuncionario.listar()}"
+                                        ajax="false"/>
+                            <p:menuitem value="Setor"
+                                        action="#{controleSetor.listar()}"
+                                        ajax="false"/>
+                            <p:menuitem value="Cargo"
+                                        action="#{controleCargo.listar()}"
+                                        ajax="false"/>
+                            <p:menuitem value="Escolaridade"
+                                        action="#{controleEscolaridade.listar()}"
+                                        ajax="false"/>
                                                      
                         </p:submenu>
                         <p:submenu label="Usuario: #{controleLogin.usuarioLogado.apelido}" rendered="#{controleLogin.usuarioLogado != null}">

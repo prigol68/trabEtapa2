@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Listagem de Funcionarios</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem" prependId="false">
+                <p:growl id="growl"/>
+                <p:commandButton actionListener="#{controleFuncionario.novo()}"
+                                 value="Nova Funcionario" icon="ui-icon-plus"
+                                 oncomplete="PF('dlg').show();"
+                                 update=":formEdicao"/>
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem:"/>
+                        <p:selectOneMenu value="#{controleFuncionario.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>                            
+                            <f:selectItem itemLabel="Funcionario" itemValue="nome"/>
+                            <f:selectItem itemLabel="Cidade" itemValue="cidade.nome"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro: "/>
+                        <p:inputText value="#{controleFuncionario.dao.filtro}">
+                            <p:ajax event="keyup" update="listagem"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:outputLabel value="Máximo de objetos"/>
+                        <p:inputText value="#{controleFuncionario.dao.maximoObjetos}" size="5">
+                            <p:ajax event="keyup" update="listagem"/>
+                        </p:inputText>
+                        <p:commandButton action="#{controleFuncionario.dao.primeiro()}"
+                                         value="Primeiro" update="listagem"/>
+                        <p:commandButton action="#{controleFuncionario.dao.anterior()}"
+                                         value="Anterior" update="listagem"/>
+                        <p:commandButton action="#{controleFuncionario.dao.proximo()}"
+                                         value="Próximo" update="listagem"/>
+                        <p:commandButton action="#{controleFuncionario.dao.ultimo()}"
+                                         value="Ultimo" update="listagem"/>
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controleFuncionario.dao.listaObjetos}" var="obj"
+                             id="listagem">
+                    <f:facet name="header">
+                        <p:outputLabel value="Listagem de Funcionarios"/>
+                    </f:facet>
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controleFuncionario.dao.mensagemNavegacao}"/>
+                    </f:facet>
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}"/>
+                    </p:column>                    
+                    <p:column headerText="E-mail">
+                        <p:outputLabel value="#{obj.email}"/>
+                    </p:column>
+                    <p:column headerText="Endereço">
+                        <p:outputLabel value="#{obj.endereco}"/>
+                    </p:column>
+                    <p:column headerText="Bairro">
+                        <p:outputLabel value="#{obj.bairro}"/>
+                    </p:column>
+                    <p:column headerText="Complemento">
+                        <p:outputLabel value="#{obj.complemento}"/>
+                    </p:column>
+                    <p:column headerText="Cidade">
+                        <p:outputLabel value="#{obj.cidade.nome}"/>
+                    </p:column>
+                    <p:column headerText="Filial">
+                        <p:outputLabel value="#{obj.filial.nome}"/>
+                    </p:column>
+                       
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton
+                                actionListener="#{controleFuncionario.editar(obj.id)}"
+                                icon="ui-icon-pencil"
+                                update=":formEdicao"
+                                process="@form"
+                                oncomplete="PF('dlg').show();"
+                                id="btnAlterar"/>
+                            <p:commandButton
+                                actionListener="#{controleFuncionario.remover(obj.id)}"
+                                icon="ui-icon-trash"
+                                update="@form"
+                                process="@form"
+                                id="btnExcluir"
+                                onclick="if (!confirm('Confirma a exclusão do objeto'))
+                                            return false"/>
+                                                       
+                        </div>
+                    </p:column>                    
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog widgetVar="dlg" header="Edição" resizable="false" modal="true"
+                      width="700" height="450">
+                <h:form id="formEdicao" prependId="false">
+                    <p:growl/>
+                    <p:tabView id="tab">
+                        <p:tab title="Dados Principais">
+                            <div align="center">
+                                <p:panelGrid columns="2">
+                                    <f:facet name="footer">
+                                        <div align="center">
+                                            <p:commandButton value="Salvar"
+                                                             icon="ui-icon-disk"
+                                                             actionListener="#{controleFuncionario.salvar()}"
+                                                             update=":formEdicao :formListagem"
+                                                             oncomplete="if(!args.validationFailed){PF('dlg').hide();}"/>
+                                        </div>
+                                    </f:facet>
+                                    <p:outputLabel value="ID"/>
+                                    <p:inputText value="#{controleFuncionario.objeto.id}" readonly="true"
+                                                 size="10"/>
+                                    
+                                    <p:outputLabel value="Nome" for="txtFuncionario"/>
+                                    <p:inputText value="#{controleFuncionario.objeto.nome}"
+                                                 id="txtFuncionario"
+                                                 size="50" maxlength="50"/>
+                                    <p:outputLabel value="E-mail" for="txtemail"/>
+                                    <p:inputText value="#{controleFuncionario.objeto.email}"
+                                                 id="txtemail"
+                                                 size="30" maxlength="30"/>
+                                    <p:outputLabel value="Endereço" for="txtEndereco"/>
+                                    <p:inputText value="#{controleFuncionario.objeto.endereco}"
+                                                 id="txtEndereco"
+                                                 size="50" maxlength="50"/>
+                                    <p:outputLabel value="Bairro" for="txtBairro"/>
+                                    <p:inputText value="#{controleFuncionario.objeto.bairro}"
+                                                 id="txtBairro"
+                                                 size="30" maxlength="30"/>
+                                    <p:outputLabel value="Complemento" for="txtComplemento"/>
+                                    <p:inputText value="#{controleFuncionario.objeto.complemento}"
+                                                 id="txtComplemento"
+                                                 size="50" maxlength="50"/>
+                                    <p:outputLabel value="Cidade" for="selectCidade"/>
+                                    <p:selectOneMenu id="selectCidade"
+                                                     value="#{controleFuncionario.objeto.cidade}">
+                                        <f:converter converterId="converterCidade"/>
+                                        <f:selectItem itemLabel="Selecione um registro"
+                                                      noSelectionOption="true"/>
+                                        <f:selectItems value="#{controleFuncionario.daoCidade.listaTodos}"
+                                                       var="p" itemLabel="#{p.nome}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Filial" for="selectFilial"/>
+                                    <p:selectOneMenu id="selectFilial"
+                                                     value="#{controleFuncionario.objeto.filial}">
+                                        <f:converter converterId="converterFilial"/>
+                                        <f:selectItem itemLabel="Selecione um registro"
+                                                      noSelectionOption="true"/>
+                                        <f:selectItems value="#{controleFuncionario.daoFilial.listaTodos}"
+                                                       var="p" itemLabel="#{p.nome}"/>
+                                    </p:selectOneMenu>
+                                                                       
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>
+                        <p:tab title="Telefones">
+                            <p:dataTable value="#{controleFuncionario.objeto.telefones}"
+                                         var="item" rowIndexVar="idx" id="listaItens">
+                                <f:facet name="header">
+                                    <p:commandButton value="Novo telefone"
+                                                     actionListener="#{controleFuncionario.novoTelefone()}"
+                                                     update=":formItem" icon="ui-icon-plus"
+                                                     id="btnNovoItem"
+                                                     process="btnNovoItem"
+                                                     oncomplete="PF('dlgItem').show();"/>
+                                </f:facet>
+                                <p:column headerText="ID">
+                                    <p:outputLabel value="#{item.id}"/>
+                                </p:column>
+                                <p:column headerText="Descricão">
+                                    <p:outputLabel value="#{item.descricao}"/>
+                                </p:column>                                
+                                <p:column headerText="Numero">
+                                    <p:outputLabel value="#{item.numero}"/>
+                                </p:column>                                
+                                <p:column headerText="Operadora">
+                                    <p:outputLabel value="#{item.operadora}"/>
+                                </p:column>                                
+                                                              
+                                <p:column headerText="Ações">
+                                    <div align="center">
+                                        <p:commandButton id="btnAlterarItem" icon="ui-icon-plus"
+                                                         actionListener="#{controleFuncionario.alterarTelefone(idx)}"
+                                                         update=":formItem" process="btnAlterarItem"
+                                                         oncomplete="PF('dlgItem').show();"/>
+                                        <p:commandButton id="btnRemoverItem" icon="ui-icon-trash"
+                                                         actionListener="#{controleFuncionario.removerTelefone(idx)}"
+                                                         process="btnRemoverItem"
+                                                         update="listaItens :formListagem:growl 
+                                                         :formEdicao:tab:txtValorTotal"
+                                                         onclick="if (!confirm('Confirma a exclusão do objeto?'))
+                                                                     return false"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        
+                    </p:tabView>
+                </h:form>
+                <ui:include src="/templates/ajaxstatus.xhtml"/>
+            </p:dialog>
+            <p:dialog header="Edição de Telefones"
+                      widgetVar="dlgItem" resizable="false" modal="true"
+                      width="400">
+                <h:form id="formItem">
+                    <p:growl/>
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <f:facet name="footer">
+                                <div align="center">
+                                    <p:commandButton id="btnAdicionarItem"
+                                                     value="Salvar"
+                                                     icon="ui-icon-plus"
+                                                     actionListener="#{controleFuncionario.salvarNumeroTelefone()}"                                              update=":formEdicao:tab:listaItens :formItem
+                                                     "
+                                                     process="@form"
+                                                     oncomplete="if(!args.validationFailed){PF('dlgItem').hide();}"/> 
+                                </div>
+                            </f:facet>
+                            <p:outputLabel value="ID"/>
+                            <p:inputText value="#{controleFuncionario.telefone.id}" readonly="true" size="10"/>
+                            
+                            <p:outputLabel value="Telefone" for="txtTelefone"/>
+                            <p:inputText value="#{controleFuncionario.telefone.numero}"
+                                         id="txtTelefone" maxlength="12" size="12"/>
+                            <p:outputLabel value="Operadora" for="txtOperadora"/>
+                            <p:inputText value="#{controleFuncionario.telefone.operadora}"
+                                         id="txtOperadora" maxlength="12" size="12"/> 
+                            
+                            <p:outputLabel value="Descrição" for="txtDescricao"/>
+                            <p:inputText value="#{controleFuncionario.telefone.descricao}"
+                                         id="txtDescricao" maxlength="50" size="50"/> 
+                            
+                        </p:panelGrid> 
+                    </div>
+                </h:form>         
+                <ui:include src="/templates/ajaxstatus.xhtml"/>
+            </p:dialog>
+        </ui:define>         
+    </ui:composition>
+</html>
+
